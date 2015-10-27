@@ -8,11 +8,7 @@
 (function () {
     'use strict';
 
-    function GalleryCtrl($state,$scope,images,Restangular) {
-        var vm = this;
-        vm.listCanSwipe = true;
-        vm.images = images;
-        console.log(images);
+    function GalleryCtrl($state,$scope,images,Restangular,$ionicLoading) {
         $scope.results = images.results;
         $scope.count = images.totalCount;
         $scope.page = images.pageIndex;
@@ -39,6 +35,22 @@
         $scope.$on('$stateChangeSuccess', function() {
             $scope.loadMoreData();
         });
+
+        $scope.refresh = function(){
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+            Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : "1"}).then(function(response){
+                $scope.results= response.results;
+                $scope.count = response.totalCount;
+                $scope.page = response.pageIndex;
+                $scope.pageSize = response.pageSize;
+            }).finally(function(){
+                console.log('$scope.refresh');
+                $scope.$broadcast('scroll.refreshComplete');
+                $ionicLoading.hide();
+            });
+        };
     }
 
     function headerCtrl(PO,$scope,$state) {
@@ -50,7 +62,7 @@
         }
     }
 
-    function itemsCtrl(items,$scope,$state,$stateParams,Restangular){
+    function itemsCtrl(items,$scope,$state,$stateParams,Restangular,$ionicLoading){
         $scope.count = items.totalCount;
         $scope.page = items.pageIndex;
         $scope.pageSize = items.pageSize;
@@ -78,6 +90,22 @@
         $scope.$on('$stateChangeSuccess', function() {
             $scope.loadMoreData();
         });
+
+        $scope.refresh = function(){
+            $ionicLoading.show({
+                template: 'Loading...'
+            });
+            Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
+                $scope.results= response.results;
+                $scope.count = response.totalCount;
+                $scope.page = response.pageIndex;
+                $scope.pageSize = response.pageSize;
+            }).finally(function(){
+                console.log('$scope.refresh');
+                $scope.$broadcast('scroll.refreshComplete');
+                $ionicLoading.hide();
+            });
+        };
     }
 
     function itemDetailCtrl(item,$scope){

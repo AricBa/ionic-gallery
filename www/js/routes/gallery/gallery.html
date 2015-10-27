@@ -1,5 +1,6 @@
 <ion-view>
     <ion-content>
+        <ion-refresher on-refresh="refresh()"></ion-refresher>
         <ion-item ng-repeat="item in results"
                   class=" listItem" ng-click="goDetail(item.PO_NUMBER)">
             <div class="row ">
