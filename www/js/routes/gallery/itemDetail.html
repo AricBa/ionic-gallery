@@ -1,0 +1,20 @@
+<ion-view >
+
+  <ion-header-bar class="bar-positive bar-header2">
+    <!--<div class="col col-10">-->
+      <!--<button ng-if="$root.showCustomBack" ng-click="$root.goBack()"-->
+              <!--class=" button-icon button-clear nav-left-button ion-android-arrow-back">-->
+      <!--</button>-->
+    <!--</div>-->
+  </ion-header-bar>
+  <ion-content class="has-header2" has-header="true" padding="true">
+
+    <!--<div class="item item-text-wrap" >-->
+    <div class="flex-container wrap" ng-repeat="(key,value) in item">
+      <div class="column bodyFont1" ng-hide = "value == ''">{{key}}</div>
+      <div class="column1  bodyFont2" ng-hide = "value == ''">{{value}}</div>
+    </div>
+
+    <!--</div>-->
+  </ion-content>
+</ion-view>
