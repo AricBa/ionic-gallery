@@ -1,18 +1,12 @@
-/**
- * Gallery controller.
- *
- * @author    Martin Micunda {@link http://martinmicunda.com}
- * @copyright Copyright (c) 2015, Martin Micunda
- * @license   The MIT License {@link http://opensource.org/licenses/MIT}
- */
+
 (function () {
     'use strict';
 
-    function GalleryCtrl($state,$scope,images,Restangular,$ionicLoading) {
-        $scope.results = images.results;
-        $scope.count = images.totalCount;
-        $scope.page = images.pageIndex;
-        $scope.pageSize = images.pageSize;
+    function GalleryCtrl($state,$scope,headers,Restangular,$ionicLoading) {
+        $scope.results = headers.results;
+        $scope.count = headers.totalCount;
+        $scope.page = headers.pageIndex;
+        $scope.pageSize = headers.pageSize;
 
 
         $scope.goDetail = function(index){
@@ -69,7 +63,6 @@
         $scope.results = items.results;
         console.log($scope.results);
 
-        console.log()
         $scope.goDetail = function(index){
             $state.go('app.itemDetail',{poNumber:$stateParams.poNumber,itemId:index});
         };

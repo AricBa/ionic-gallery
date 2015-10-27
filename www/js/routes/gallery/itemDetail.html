@@ -10,9 +10,9 @@
   <ion-content class="has-header2" has-header="true" padding="true">
 
     <!--<div class="item item-text-wrap" >-->
-    <div class="flex-container wrap" ng-repeat="(key,value) in item">
-      <div class="column bodyFont1" ng-hide = "value == ''">{{key}}</div>
-      <div class="column1  bodyFont2" ng-hide = "value == ''">{{value}}</div>
+    <div class="flex-container wrap" ng-repeat="(key,value) in item" ng-hide = "value == ''">
+      <div class="column bodyFont1" >{{key}}</div>
+      <div class="column1  bodyFont2" >{{value}}</div>
     </div>
 
     <!--</div>-->

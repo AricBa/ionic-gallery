@@ -1,22 +1,15 @@
 <ion-view>
     <ion-content>
         <ion-refresher on-refresh="refresh()"></ion-refresher>
-        <ion-item ng-repeat="item in results"
-                  class=" listItem" ng-click="goDetail(item.PO_NUMBER)">
-            <div class="row ">
-                <div class="col col-50 bodyFont2">{{ item.PO_NUMBER}}</div>
-                <div class="col col-50 bodyFont1">{{ item.TARGET_VAL | currency:
-                    item.CURRENCY_ISO}}
+        <ion-item ng-repeat="item in results" bindonce
+                  class="item-text-wrap" ng-click="goDetail(item.PO_NUMBER)">
+                <div class=" bodyFont2">{{ item.PO_NUMBER}}</div>
+                <div class=" bodyFont1">{{ item.TARGET_VAL | currency:item.CURRENCY_ISO}}
                 </div>
-            </div>
-            <div class="row captionFont1">
-                <div class="col col-75">{{ item.VEND_NAME}}
-                    <!--<i ng-show="item.favorite" class="icon ion-heart assertive"></i>-->
+                <div >{{ item.VEND_NAME}}{{item.DOC_DATE}}
                 </div>
-                <div class="col col-25 col-offset-10 captionFont3"><span am-time-ago="item.DOC_DATE"></span>
+                <div class="captionFont3"><span am-time-ago="item.LAST_CHANGE_TIME"></span>
                 </div>
-            </div>
-            <i class="icon ion-ios-arrow-right muted"></i>
         </ion-item>
 
         <ion-infinite-scroll ng-if="isMoreData()" on-infinite="loadMoreData()" distance="1%">
