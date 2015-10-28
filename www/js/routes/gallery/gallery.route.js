@@ -1,8 +1,11 @@
 
 (function () {
     'use strict';
-    function galleryRoute($stateProvider) {
-        $stateProvider
+
+    angular
+        .module('app.gallery')
+        .config(function($stateProvider) {
+          $stateProvider
             .state('app.gallery', {
                 url: '/galleries/:userId',
                 views: {
@@ -20,106 +23,108 @@
                     authenticate: true
                 }
             })
-          .state('app.poHeader',{
-              url:'poHeaders/:poNumber',
-              views:{
-                  'menuContent':{
-                      templateUrl: 'js/routes/gallery/header.html',
-                      controller:'headerCtrl as vm'
-                  }
-              },
-              resolve:{
-                  PO :function ($stateParams,Restangular,$q,$ionicLoading){
-                      var a = $q.defer();
+            .state('app.poHeader',{
+                url:'poHeaders/:poNumber',
+                views:{
+                    'menuContent':{
+                        templateUrl: 'js/routes/gallery/header.html',
+                        controller:'headerCtrl as vm'
+                    }
+                },
+                resolve:{
+                    PO :function ($stateParams,Restangular,$q,$ionicLoading){
+                        var d = $q.defer();
 
-                      var thenFn = function (value) {
-                            console.log('resolved ', value);
-                            return value;
-                        }, d0 = $q.defer(), d1 = $q.defer(),f0=d0.promise,f1=d1.promise;
-                      $ionicLoading.show({
-                          template:'Loading...'
-                      });
+                        $ionicLoading.show({
+                            template:'Loading...'
+                        });
 
-                      Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET().then(function(response){
-                          d0.resolve(response);
-                      },function(err){
-                          d0.reject(err);
-                      });
+                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET().then(function(response){
+                            if(response.results[0].DM_STATUS == 0) {
+                                d.resolve([response,'Approve']);
+                            }else if (response.results[0].DM_STATUS == 1){
+                                d.resolve([response,'Lock']);
+                            }else{
+                                d.resolve([response,'Reset']);
+                            }
+                            $ionicLoading.hide();
+                        },function(err){
+                            d.reject(err);
+                            $ionicLoading.hide();
+                        });
 
-                      Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/status').customGET().then(function(response){
-                          console.log(response);
-                          if(response.results[0].DM_STATUS == 0) {
-                              d1.resolve('Approve');
-                          }else if (response.results[0].DM_STATUS == 1){
-                              d1.resolve('Lock');
-                          }else{
-                              d1.resolve('Reset');
-                          }
-                      },function(err){
-                          d1.reject(err);
-                      });
+                        //Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/status').customGET().then(function(response){
+                        //    console.log(response);
+                        //
+                        //},function(err){
+                        //    d1.reject(err);
+                        //});
 
-                      $q.all([f0.then(thenFn),f1.then(thenFn)]).then(function(values){
-                          a.resolve(values);
-                          $ionicLoading.hide();
-                      });
+                        return d.promise;
+                    }
+                },
+                data: {
+                    authenticate: true
+                }
 
-                      return a.promise;
-                  }
-              },
-              data: {
-                  authenticate: true
-              }
+            })
+            .state('app.items',{
+                url:'poHeaders/:poNumber/items',
+                views:{
+                    'menuContent':{
+                        templateUrl: 'js/routes/gallery/items.html',
+                        controller:'itemsCtrl as vm'
+                    }
+                },
+                resolve:{
+                    items:function($stateParams,Restangular,$q,$ionicLoading){
+                        var d = $q.defer();
+                        $ionicLoading.show({
+                            template:'Loading'
+                        });
 
-          })
-          .state('app.items',{
-              url:'poHeaders/:poNumber/items',
-              views:{
-                  'menuContent':{
-                      templateUrl: 'js/routes/gallery/items.html',
-                      controller:'itemsCtrl as vm'
-                  }
-              },
-              resolve:{
-                  items:function($stateParams,Restangular,$q,$ionicLoading){
-                      var d = $q.defer();
-                      $ionicLoading.show({
-                          template:'Loading'
-                      });
+                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
+                            d.resolve(response);
+                            $ionicLoading.hide();
+                        });
 
-                      Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
-                          d.resolve(response);
-                          $ionicLoading.hide();
-                      });
+                        return d.promise;
+                    }
+                },
+                data: {
+                    authenticate: true
+                }
+            })
+            .state('app.itemDetail',{
+                url:'poHeaders/:poNumber/items/:itemId',
+                views:{
+                    'menuContent':{
+                        templateUrl: 'js/routes/gallery/itemDetail.html',
+                        controller:'itemDetailCtrl as vm'
+                    }
+                },
+                resolve:{
+                    item:function($stateParams,Restangular){
+                        return Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId).customGET();
+                    }
+                },
+                data: {
+                    authenticate: true
+                }
+            })
+            .state('singlePageTemplate',{
+                url:'/singlePageTemplate/:poNumber?items?itemsId',
+                views:{
+                    'menuContent':{
+                        templateUrl: 'js/routes/gallery/single-page-template.html',
+                        controller:'singlePageTemplateCtrl'
+                    }
+                },
+                resolve:{
+                    resolveObj: function($q,ionicLoading, restApi, $stateParams){
 
-                      return d.promise;
-                  }
-              },
-              data: {
-                  authenticate: true
-              }
-          })
-          .state('app.itemDetail',{
-              url:'poHeaders/:poNumber/items/:itemId',
-              views:{
-                  'menuContent':{
-                      templateUrl: 'js/routes/gallery/itemDetail.html',
-                      controller:'itemDetailCtrl as vm'
-                  }
-              },
-              resolve:{
-                  item:function($stateParams,Restangular){
-                     return Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId).customGET();
-                  }
-              },
-              data: {
-                  authenticate: true
-              }
-          });
-    }
-
-    angular
-        .module('app.gallery')
-        .config(galleryRoute);
-
+                    }
+                },
+            });
+      });
 })();

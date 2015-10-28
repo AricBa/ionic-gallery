@@ -12,6 +12,19 @@
      * @ngdoc module
      * @name app.gallery
      */
-    angular.module('app.gallery', []);
+    angular.module('app.gallery', [])
+      .factory('restApi',function(Restangular){
+          var restApi;
+          restApi = {
+              getData: function(route,path,params,headers){
+                 return Restangular.all(route).customGET(path,params,headers);
+              },
+              post: function(route){
+                  return Restangular.all(route).post();
+              }
+          }
+
+          return restApi;
+      });
 
 })();

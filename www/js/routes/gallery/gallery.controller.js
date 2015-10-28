@@ -1,116 +1,107 @@
 
 (function () {
     'use strict';
-
-    function GalleryCtrl($state,$scope,headers,Restangular,$ionicLoading) {
-        $scope.results = headers.results;
-        $scope.count = headers.totalCount;
-        $scope.page = headers.pageIndex;
-        $scope.pageSize = headers.pageSize;
-
-
-        $scope.goDetail = function(index){
-            $state.go('app.poHeader',{poNumber:index});
-        };
-
-        $scope.isMoreData = function () {
-            console.log($scope.page < ($scope.count / $scope.pageSize));
-            return $scope.page < ($scope.count / $scope.pageSize);
-        };
-
-        $scope.loadMoreData = function(){
-            $scope.page++;
-            Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : $scope.page}).then(function(response){
-                Array.prototype.push.apply($scope.results, response.results);
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                console.log($scope.results);
-            })
-        };
-        //$scope.$on('$stateChangeSuccess', function() {
-        //    $scope.loadMoreData();
-        //});
-
-        $scope.refresh = function(){
-            $ionicLoading.show({
-                template: 'Loading...'
-            });
-            Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : "1"}).then(function(response){
-                $scope.results= response.results;
-                $scope.count = response.totalCount;
-                $scope.page = response.pageIndex;
-                $scope.pageSize = response.pageSize;
-            }).finally(function(){
-                console.log('$scope.refresh');
-                $scope.$broadcast('scroll.refreshComplete');
-                $ionicLoading.hide();
-            });
-        };
-    }
-
-    function headerCtrl(PO,$scope,$state) {
-        $scope.po = PO[0].results[0];
-        $scope.approve = PO[1];
-
-        $scope.goToItems = function(){
-            $state.go('app.items',{poNumber:$scope.po.PO_NUMBER});
-        }
-    }
-
-    function itemsCtrl(items,$scope,$state,$stateParams,Restangular,$ionicLoading){
-        $scope.count = items.totalCount;
-        $scope.page = items.pageIndex;
-        $scope.pageSize = items.pageSize;
-        $scope.results = items.results;
-        console.log($scope.results);
-
-        $scope.goDetail = function(index){
-            $state.go('app.itemDetail',{poNumber:$stateParams.poNumber,itemId:index});
-        };
-
-        $scope.isMoreData = function () {
-            console.log($scope.page < ($scope.count / $scope.pageSize));
-            return $scope.page < ($scope.count / $scope.pageSize);
-        };
-
-        $scope.loadMoreData = function(){
-            $scope.page++;
-            Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : $scope.page}).then(function(response){
-                Array.prototype.push.apply($scope.results, response.results);
-                $scope.$broadcast('scroll.infiniteScrollComplete');
-                console.log($scope.results);
-            })
-        };
-        //$scope.$on('$stateChangeSuccess', function() {
-        //    $scope.loadMoreData();
-        //});
-
-        $scope.refresh = function(){
-            $ionicLoading.show({
-                template: 'Loading...'
-            });
-            Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
-                $scope.results= response.results;
-                $scope.count = response.totalCount;
-                $scope.page = response.pageIndex;
-                $scope.pageSize = response.pageSize;
-            }).finally(function(){
-                console.log('$scope.refresh');
-                $scope.$broadcast('scroll.refreshComplete');
-                $ionicLoading.hide();
-            });
-        };
-    }
-
-    function itemDetailCtrl(item,$scope){
-        $scope.item = item.results[0];
-    }
-
         angular
         .module('app.gallery')
-        .controller('GalleryCtrl', GalleryCtrl)
-        .controller('headerCtrl',headerCtrl)
-        .controller('itemsCtrl',itemsCtrl)
-        .controller('itemDetailCtrl',itemDetailCtrl)
+        .controller('GalleryCtrl', function($state,$scope,headers,Restangular,$ionicLoading) {
+              $scope.results = headers.results;
+              $scope.count = headers.totalCount;
+              $scope.page = headers.pageIndex;
+              $scope.pageSize = headers.pageSize;
+
+
+              $scope.goDetail = function(index){
+                  $state.go('app.poHeader',{poNumber:index});
+              };
+
+              $scope.isMoreData = function () {
+                  console.log($scope.page < ($scope.count / $scope.pageSize));
+                  return $scope.page < ($scope.count / $scope.pageSize);
+              };
+
+              $scope.loadMoreData = function(){
+                  $scope.page++;
+                  Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : $scope.page}).then(function(response){
+                      Array.prototype.push.apply($scope.results, response.results);
+                      $scope.$broadcast('scroll.infiniteScrollComplete');
+                      console.log($scope.results);
+                  })
+              };
+              //$scope.$on('$stateChangeSuccess', function() {
+              //    $scope.loadMoreData();
+              //});
+
+              $scope.refresh = function(){
+                  $ionicLoading.show({
+                      template: 'Loading...'
+                  });
+                  Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : "1"}).then(function(response){
+                      $scope.results= response.results;
+                      $scope.count = response.totalCount;
+                      $scope.page = response.pageIndex;
+                      $scope.pageSize = response.pageSize;
+                  }).finally(function(){
+                      console.log('$scope.refresh');
+                      $scope.$broadcast('scroll.refreshComplete');
+                      $ionicLoading.hide();
+                  });
+              };
+          })
+        .controller('headerCtrl',function(PO,$scope,$state) {
+              $scope.po = PO[0].results[0];
+              $scope.approve = PO[1];
+
+              $scope.goToItems = function(){
+                  $state.go('app.items',{poNumber:$scope.po.PO_NUMBER});
+              }
+          })
+        .controller('itemsCtrl',function(items,$scope,$state,$stateParams,Restangular,$ionicLoading){
+              $scope.count = items.totalCount;
+              $scope.page = items.pageIndex;
+              $scope.pageSize = items.pageSize;
+              $scope.results = items.results;
+              console.log($scope.results);
+
+              $scope.goDetail = function(index){
+                  $state.go('app.itemDetail',{poNumber:$stateParams.poNumber,itemId:index});
+              };
+
+              $scope.isMoreData = function () {
+                  console.log($scope.page < ($scope.count / $scope.pageSize));
+                  return $scope.page < ($scope.count / $scope.pageSize);
+              };
+
+              $scope.loadMoreData = function(){
+                  $scope.page++;
+                  Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : $scope.page}).then(function(response){
+                      Array.prototype.push.apply($scope.results, response.results);
+                      $scope.$broadcast('scroll.infiniteScrollComplete');
+                      console.log($scope.results);
+                  })
+              };
+              //$scope.$on('$stateChangeSuccess', function() {
+              //    $scope.loadMoreData();
+              //});
+
+              $scope.refresh = function(){
+                  $ionicLoading.show({
+                      template: 'Loading...'
+                  });
+                  Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
+                      $scope.results= response.results;
+                      $scope.count = response.totalCount;
+                      $scope.page = response.pageIndex;
+                      $scope.pageSize = response.pageSize;
+                  }).finally(function(){
+                      console.log('$scope.refresh');
+                      $scope.$broadcast('scroll.refreshComplete');
+                      $ionicLoading.hide();
+                  });
+              };
+          })
+        .controller('itemDetailCtrl', function(item,$scope){
+              $scope.item = item.results[0];
+          })
         .directive('createTask', function ( ) {
           return {
               restrict: "EA",
@@ -162,7 +153,7 @@
                       };
               },
 
-              template: '<button disabled="true" ng-click="showConfirm()">{{buttonText}}</button>',
+              template: '<button  ng-click="showConfirm()">{{buttonText}}</button>',
               replace: true
           };
           })
