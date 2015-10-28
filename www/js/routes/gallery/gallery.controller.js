@@ -107,9 +107,10 @@
               restrict: "EA",
               scope: {
                   buttonText: '=',
-                  popup: '='// Use @ for One Way Text Binding;Use = for Two Way Binding;Use & to Execute Functions in the Parent Scope
+                  status:'=',
+                  poNum: '='// Use @ for One Way Text Binding;Use = for Two Way Binding;Use & to Execute Functions in the Parent Scope
               },
-              controller: function ($ionicPopup,$scope,Restangular,$ionicLoading) {
+              controller: function ($ionicPopup,$scope,Restangular,$ionicLoading,$timeout) {
                       $scope.ionicPopup = {
                           title: 'Approve po',
                           cssClass: 'ionicPopup',
@@ -127,25 +128,52 @@
                                   $ionicLoading.show({
                                       template:'Loading...'
                                   });
-                                  if($scope.buttonText == 'Approve'){
-                                      Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/approve').post().then(function(response){
-                                          $ionicLoading.hide();
-                                          $scope.buttonText = 'Lock';
-                                          console.log(response);
-                                          console.log('approve');
-                                      });
-                                  }else if( $scope.buttonText =='Reset'){
-                                          Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/reset').post().then(function(response){
+                                console.log($scope.poNum);
+                                  Restangular.all('sap/po/purchase_orders/'+$scope.poNum+'/status').customGET().then(function(response){
+                                    console.log(response.results[0].DM_STATUS);
+                                    console.log($scope.status);
+                                      if(response.results[0].DM_STATUS == $scope.status) {
+                                        if($scope.buttonText == 'Approve'){
+                                          Restangular.all('sap/po/purchase_orders/'+$scope.poNum+'/approve').post().then(function(response){
+                                            $ionicLoading.hide();
+                                            $ionicLoading.show({
+                                              template:'the task is approving'
+                                            });
+                                            $timeout(function() {
                                               $ionicLoading.hide();
-                                              $scope.buttonText = 'Approve';
-                                              console.log(response);
-                                              console.log('reset');
-                                      })
+                                            }, 1000);
+                                            $scope.buttonText = 'Lock';
+                                            console.log(response);
+                                            console.log('approve');
+                                          });
+                                        }else if( $scope.buttonText =='Reset'){
+                                          Restangular.all('sap/po/purchase_orders/'+$scope.poNum+'/reset').post().then(function(response){
+                                            $ionicLoading.hide();
+                                            $ionicLoading.show({
+                                              template:'the task is reseted'
+                                            });
+                                            $timeout(function() {
+                                              $ionicLoading.hide();
+                                            }, 1000);
+                                            $scope.buttonText = 'Approve';
+                                            console.log(response);
+                                            console.log('reset');
+                                          })
+                                        }else{
+                                          console.log("Locked");
+                                          $ionicLoading.hide();
+                                        }
+                                      }else{
+                                        $ionicLoading.hide();
+                                        $ionicLoading.show({
+                                          template:'status has changed'
+                                        });
+                                        $timeout(function() {
+                                          $ionicLoading.hide();
+                                        }, 1000);
+                                      }
+                                  });
 
-                                  }else{
-                                      console.log("Locked");
-                                      $ionicLoading.hide();
-                                  }
                               } else {
                                   console.log('cancel');
                               }
@@ -157,7 +185,7 @@
               replace: true
           };
           })
-       .factory('searchHistory', function (localStorageService) {
+        .factory('searchHistory', function (localStorageService) {
           var searchHistory;
           searchHistory = {
               getHistory: function (arrayName) {

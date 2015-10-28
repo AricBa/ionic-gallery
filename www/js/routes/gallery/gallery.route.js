@@ -11,7 +11,7 @@
                 views: {
                     'menuContent': {
                         templateUrl: 'js/routes/gallery/gallery.html',
-                        controller: 'GalleryCtrl as vm'
+                        controller: 'GalleryCtrl'
                     }
                 },
                 resolve: {/* @ngInject */
@@ -23,7 +23,7 @@
                     authenticate: true
                 }
             })
-            .state('app.poHeader',{
+            .state('app.poHeader', {
                 url:'poHeaders/:poNumber',
                 views:{
                     'menuContent':{
@@ -40,7 +40,7 @@
                         });
 
                         Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET().then(function(response){
-                            if(response.results[0].DM_STATUS == 0) {
+                            if(response.results[0].DM_STATUS == 0 || response.results[0].DM_STATUS == 6) {
                                 d.resolve([response,'Approve']);
                             }else if (response.results[0].DM_STATUS == 1){
                                 d.resolve([response,'Lock']);
@@ -52,13 +52,6 @@
                             d.reject(err);
                             $ionicLoading.hide();
                         });
-
-                        //Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/status').customGET().then(function(response){
-                        //    console.log(response);
-                        //
-                        //},function(err){
-                        //    d1.reject(err);
-                        //});
 
                         return d.promise;
                     }
@@ -73,7 +66,7 @@
                 views:{
                     'menuContent':{
                         templateUrl: 'js/routes/gallery/items.html',
-                        controller:'itemsCtrl as vm'
+                        controller:'itemsCtrl'
                     }
                 },
                 resolve:{
@@ -100,7 +93,7 @@
                 views:{
                     'menuContent':{
                         templateUrl: 'js/routes/gallery/itemDetail.html',
-                        controller:'itemDetailCtrl as vm'
+                        controller:'itemDetailCtrl'
                     }
                 },
                 resolve:{
@@ -122,6 +115,7 @@
                 },
                 resolve:{
                     resolveObj: function($q,ionicLoading, restApi, $stateParams){
+                        var d = $q.defer();
 
                     }
                 },
