@@ -31,6 +31,8 @@
         });
 
         $urlRouterProvider.otherwise('/signin');
+
+        RestangularProvider.setDefaultHttpFields({cache: true});
     }
 
     /* @ngInject */

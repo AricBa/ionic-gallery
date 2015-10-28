@@ -12,7 +12,7 @@
      * @ngInject
      */
     function AuthenticationProvider() {
-        this.$get = function($http, Restangular, Token, localStorageService,$rootScope) {
+        this.$get = function($http, Restangular, Token, localStorageService) {
             var currentUser = null;
             function saveUserAndToken(token) {
                 // store token to local storage

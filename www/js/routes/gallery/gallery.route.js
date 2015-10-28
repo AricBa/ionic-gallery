@@ -37,7 +37,7 @@
                             return value;
                         }, d0 = $q.defer(), d1 = $q.defer(),f0=d0.promise,f1=d1.promise;
                       $ionicLoading.show({
-                          template:'Loading'
+                          template:'Loading...'
                       });
 
                       Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET().then(function(response){
@@ -87,7 +87,7 @@
                           template:'Loading'
                       });
 
-                      Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/').customGET('',{pageIndex : "1"}).then(function(response){
+                      Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
                           d.resolve(response);
                           $ionicLoading.hide();
                       });

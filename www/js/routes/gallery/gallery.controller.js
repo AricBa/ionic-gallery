@@ -26,9 +26,9 @@
                 console.log($scope.results);
             })
         };
-        $scope.$on('$stateChangeSuccess', function() {
-            $scope.loadMoreData();
-        });
+        //$scope.$on('$stateChangeSuccess', function() {
+        //    $scope.loadMoreData();
+        //});
 
         $scope.refresh = function(){
             $ionicLoading.show({
@@ -80,9 +80,9 @@
                 console.log($scope.results);
             })
         };
-        $scope.$on('$stateChangeSuccess', function() {
-            $scope.loadMoreData();
-        });
+        //$scope.$on('$stateChangeSuccess', function() {
+        //    $scope.loadMoreData();
+        //});
 
         $scope.refresh = function(){
             $ionicLoading.show({
@@ -109,56 +109,62 @@
         .module('app.gallery')
         .controller('GalleryCtrl', GalleryCtrl)
         .controller('headerCtrl',headerCtrl)
-          .controller('itemsCtrl',itemsCtrl)
-          .controller('itemDetailCtrl',itemDetailCtrl)
-          .directive('createTask', function ( ) {
+        .controller('itemsCtrl',itemsCtrl)
+        .controller('itemDetailCtrl',itemDetailCtrl)
+        .directive('createTask', function ( ) {
+          return {
+              restrict: "EA",
+              scope: {
+                  buttonText: '=',
+                  popup: '='// Use @ for One Way Text Binding;Use = for Two Way Binding;Use & to Execute Functions in the Parent Scope
+              },
+              controller: function ($ionicPopup,$scope,Restangular,$ionicLoading) {
+                      $scope.ionicPopup = {
+                          title: 'Approve po',
+                          cssClass: 'ionicPopup',
+                          //template: 'OK',
+                          cancelText: 'CANCEL',
+                          cancelType: 'button button-clear button-positive',
+                          okText: 'APPROVE',
+                          okType: 'button button-clear button-positive'
+                      };
 
-              return {
-                  restrict: "EA",
-                  scope: {
-                      buttonText: '=',
-                      popup: '='// Use @ for One Way Text Binding;Use = for Two Way Binding;Use & to Execute Functions in the Parent Scope
-                  },
-                  controller: function ($ionicPopup,$scope,Restangular) {
-                          $scope.ionicPopup = {
-                              title: 'test',
-                              cssClass: 'ionicPopup',
-                              template: 'OK',
-                              cancelText: 'CANCEL',
-                              cancelType: 'button button-clear button-positive',
-                              okText: 'APPROVE',
-                              okType: 'button button-clear button-positive'
-                          };
-
-                          $scope.showConfirm = function () {
-                              var confirmPopup = $ionicPopup.confirm($scope.ionicPopup);
-                              confirmPopup.then(function (res) {
-                                  if (res) {
-                                      if($scope.buttonText == 'Approve'){
-                                          Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/approve').post().then(function(response){
-                                              $scope.buttonText = 'Lock';
+                      $scope.showConfirm = function () {
+                          var confirmPopup = $ionicPopup.confirm($scope.ionicPopup);
+                          confirmPopup.then(function (res) {
+                              if (res) {
+                                  $ionicLoading.show({
+                                      template:'Loading...'
+                                  });
+                                  if($scope.buttonText == 'Approve'){
+                                      Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/approve').post().then(function(response){
+                                          $ionicLoading.hide();
+                                          $scope.buttonText = 'Lock';
+                                          console.log(response);
+                                          console.log('approve');
+                                      });
+                                  }else if( $scope.buttonText =='Reset'){
+                                          Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/reset').post().then(function(response){
+                                              $ionicLoading.hide();
+                                              $scope.buttonText = 'Approve';
                                               console.log(response);
-                                              console.log('approve');
-                                          });
-                                      }else if( $scope.buttonText =='Reset'){
-                                              Restangular.all('sap/po/purchase_orders/'+$scope.popup+'/reset').post().then(function(response){
-                                                  console.log(response);
-                                                  console.log('reset');
-                                          })
+                                              console.log('reset');
+                                      })
 
-                                      }else{
-                                          console.log("Locked");
-                                      };
-                                  } else {
-                                      console.log('cancel');
+                                  }else{
+                                      console.log("Locked");
+                                      $ionicLoading.hide();
                                   }
-                              });
-                          };
-                  },
+                              } else {
+                                  console.log('cancel');
+                              }
+                          });
+                      };
+              },
 
-                  template: '<a  ng-click="showConfirm()">{{buttonText}}</a>',
-                  replace: true
-              };
+              template: '<button disabled="true" ng-click="showConfirm()">{{buttonText}}</button>',
+              replace: true
+          };
           })
        .factory('searchHistory', function (localStorageService) {
           var searchHistory;
