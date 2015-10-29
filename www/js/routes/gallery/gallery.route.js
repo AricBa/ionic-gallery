@@ -73,7 +73,7 @@
                     items:function($stateParams,Restangular,$q,$ionicLoading){
                         var d = $q.defer();
                         $ionicLoading.show({
-                            template:'Loading'
+                            template:'Loading...'
                         });
 
                         Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
@@ -97,8 +97,18 @@
                     }
                 },
                 resolve:{
-                    item:function($stateParams,Restangular){
-                        return Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId).customGET();
+                    item:function($stateParams,Restangular,$q,$ionicLoading){
+                        var d = $q.defer();
+                        $ionicLoading.show({
+                            template:'Loading...'
+                        });
+
+                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId).customGET().then(function(response){
+                            d.resolve(response);
+                            $ionicLoading.hide();
+                        });
+
+                        return d.promise;
                     }
                 },
                 data: {

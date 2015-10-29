@@ -33,11 +33,6 @@
         'app.gallery',
         'app.galleries'
     ])
-      .config(function (localStorageServiceProvider) {
-          localStorageServiceProvider
-            .setPrefix('gallery')
-            .setNotify(true, true);
-      })
       .run(function ($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
