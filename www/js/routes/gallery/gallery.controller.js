@@ -55,7 +55,11 @@
                   $state.go('app.items',{poNumber:$scope.po.PO_NUMBER});
               }
           })
-        .controller('itemsCtrl',function(items,$scope,$state,$stateParams,Restangular,$ionicLoading){
+        .controller('itemsCtrl',function(items,$scope,$state,$stateParams,Restangular,$ionicLoading,$ionicSideMenuDelegate){
+            $scope.do = function(){
+              $ionicSideMenuDelegate.toggleRight();
+            };
+
               $scope.count = items.totalCount;
               $scope.page = items.pageIndex;
               $scope.pageSize = items.pageSize;

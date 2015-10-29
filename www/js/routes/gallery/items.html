@@ -1,8 +1,12 @@
-<ion-view   >
-  <ion-header-bar class="bar-positive">
-  </ion-header-bar>
+<ion-view >
+  <ion-nav-buttons side="right">
+    <button class="button button-icon" ng-click="do()">
+      Filter
+    </button>
+  </ion-nav-buttons>
 <ion-content>
   <ion-refresher on-refresh="refresh()"></ion-refresher>
+
   <ion-list can-swipe="true">
     <ion-item class="item item-icon-right "
               bindonce ng-repeat="item in results" ng-click="goDetail(item.PO_ITEM)">

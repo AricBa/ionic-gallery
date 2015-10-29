@@ -28,7 +28,7 @@
                 views:{
                     'menuContent':{
                         templateUrl: 'js/routes/gallery/header.html',
-                        controller:'headerCtrl as vm'
+                        controller:'headerCtrl'
                     }
                 },
                 resolve:{

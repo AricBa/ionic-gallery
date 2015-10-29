@@ -11,6 +11,14 @@
                 <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
                 </button>
             </ion-nav-buttons>
+            <ion-nav-buttons side="right">
+                <!--<md-button class="md-icon-button" aria-label="Menu" menu-toggle="left">-->
+                <!--<md-icon md-svg-icon="img/icons/menu.svg"></md-icon>-->
+                <!--</md-button>-->
+                <button class="button button-icon " menu-toggle="right">
+                    Filter
+                </button>
+            </ion-nav-buttons>
         </ion-nav-bar>
         <ion-nav-view name="menuContent"></ion-nav-view>
     </ion-side-menu-content>
@@ -55,6 +63,11 @@
                     </a>
                 </li>
             </ul>
+        </ion-content>
+    </ion-side-menu>
+
+    <ion-side-menu side="right" expose-aside-when="large">
+        <ion-content scroll="false" class="sidebar">
         </ion-content>
     </ion-side-menu>
 </ion-side-menus>
