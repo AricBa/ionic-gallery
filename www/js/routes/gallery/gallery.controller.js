@@ -56,7 +56,7 @@
               }
           })
         .controller('itemsCtrl',function(items,$scope,$state,$stateParams,Restangular,$ionicLoading,$ionicSideMenuDelegate){
-            $scope.do = function(){
+            $scope.openFilter = function(){
               $ionicSideMenuDelegate.toggleRight();
             };
 
