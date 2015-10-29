@@ -129,6 +129,9 @@
 
                     }
                 },
+                data: {
+                    authenticate: true
+                }
             });
       });
 })();
