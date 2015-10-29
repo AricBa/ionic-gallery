@@ -11,17 +11,18 @@
 
       <!--</div>-->
   </ion-content>
-  <div class="bar bar-footer bar-positive-400">
-    <div class="buttons buttons-right">
-      <create-task ng-disabled="approve == 'Lock'"
-                   class="button "
-                   button-text="approve"
-                   po-num="po.PO_NUMBER"
-                   status="po.DM_STATUS"
-                   ></create-task>
-      <button ng-click="goToItems()">items</button>
-      <!--<button ng-show="buttonFab.name==='favorite'" class="button button-energized-900 "><i-->
-              <!--class="icon ion-star light"></i></button>-->
-    </div>
-  </div>
+  <ion-footer-bar class="bar bar-footer bar-positive">
+
+      <div class="buttons buttons-right">
+        <create-task ng-disabled="approve == 'Lock'"
+                     class="button button-icon"
+                     button-text="approve"
+                     po-num="po.PO_NUMBER"
+                     status="po.DM_STATUS"
+                ></create-task>
+        <button ng-click="goToItems()" class="button button-icon">items</button>
+        <!--<button ng-show="buttonFab.name==='favorite'" class="button button-energized-900 "><i-->
+        <!--class="icon ion-star light"></i></button>-->
+      </div>
+  </ion-footer-bar>
 </ion-view>
