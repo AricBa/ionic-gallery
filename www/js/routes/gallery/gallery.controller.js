@@ -25,10 +25,7 @@
                   $scope.params = {
                       pageIndex : $scope.page
                     };
-                  $scope.headers ={
-
-                    };
-                  restApi.getData($scope.route,$scope.path,$scope.params,$scope.headers).then(function(response){
+                  restApi.getData($scope.route,$scope.path,$scope.params).then(function(response){
                       Array.prototype.push.apply($scope.results, response.results);
                       $scope.$broadcast('scroll.infiniteScrollComplete');
                       console.log($scope.results);
@@ -52,10 +49,8 @@
                     pageIndex : '1',
                     filter: $scope.status
                   };
-                  $scope.headers ={
 
-                  };
-                  restApi.getData($scope.route,$scope.path,$scope.params,$scope.headers).then(function(response){
+                  restApi.getData($scope.route,$scope.path,$scope.params).then(function(response){
                       $scope.results= response.results;
                       $scope.count = response.totalCount;
                       $scope.page = response.pageIndex;
@@ -64,7 +59,7 @@
                       console.log('$scope.refresh');
                       $scope.$broadcast('scroll.refreshComplete');
                       $ionicLoading.hide();
-                    $scope.status = '';
+                      $scope.status = '';
                   });
               };
 

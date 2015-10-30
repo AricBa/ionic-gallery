@@ -21,10 +21,7 @@
                         var params = {
                             pageIndex : '1'
                         };
-                        var headers ={
-
-                        };
-                        return restApi.getData(route,path,params,headers);
+                        return restApi.getData(route,path,params);
                     }
                 },
                 data: {
