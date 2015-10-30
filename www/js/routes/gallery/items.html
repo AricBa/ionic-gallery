@@ -1,22 +1,17 @@
 <ion-view >
-  <!--<ion-nav-buttons side="right">-->
-    <!--<button class="button button-icon" ng-click="openFilter()">-->
-      <!--Filter-->
-    <!--</button>-->
-  <!--</ion-nav-buttons>-->
-<ion-content>
-  <ion-refresher on-refresh="refresh()"></ion-refresher>
+  <ion-content>
+    <ion-refresher on-refresh="refresh()"></ion-refresher>
 
-  <ion-list can-swipe="true">
-    <ion-item class="item item-icon-right "
-              bindonce ng-repeat="item in results" ng-click="goDetail(item.PO_ITEM)">
-      <h2>{{ item.PO_ITEM}} {{ item.PUR_MAT}}</h2>
-      <p>{{ item.NET_PRICE}} {{ item.DISP_QUAN}}</p>
-      {{ item.SHORT_TEXT}}
-      <i class="icon ion-ios-arrow-right muted"></i>
-    </ion-item>
-  </ion-list>
-  <ion-infinite-scroll ng-if="isMoreData()" on-infinite="loadMoreData()" distance="1%">
-  </ion-infinite-scroll>
-</ion-content>
+    <ion-list can-swipe="true">
+      <ion-item class="item item-icon-right "
+                bindonce ng-repeat="item in results" ng-click="goDetail(item.PO_ITEM)">
+        <h2>{{ item.PO_ITEM}} {{ item.PUR_MAT}}</h2>
+        <p>{{ item.NET_PRICE}} {{ item.DISP_QUAN}}</p>
+        {{ item.SHORT_TEXT}}
+        <i class="icon ion-ios-arrow-right muted"></i>
+      </ion-item>
+    </ion-list>
+    <ion-infinite-scroll ng-if="isMoreData()" on-infinite="loadMoreData()" distance="1%">
+    </ion-infinite-scroll>
+  </ion-content>
 </ion-view>
