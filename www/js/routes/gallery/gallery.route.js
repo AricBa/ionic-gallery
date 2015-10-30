@@ -120,7 +120,7 @@
                         var params = {
                             pageIndex : '1'
                         };
-                        return restApi.getData(route,path,params).then(function(response){
+                        restApi.getData(route,path,params).then(function(response){
                             d.resolve(response);
                             $ionicLoading.hide();
                         });

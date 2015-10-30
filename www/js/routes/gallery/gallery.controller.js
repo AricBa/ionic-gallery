@@ -75,7 +75,7 @@
                   $state.go('app.items',{poNumber:$scope.po.PO_NUMBER});
               }
           })
-        .controller('itemsCtrl',function(items,$scope,$state,$stateParams,Restangular,$ionicLoading,$ionicSideMenuDelegate){
+        .controller('itemsCtrl',function(items,$scope,$state,$stateParams,restApi,$ionicLoading,$ionicSideMenuDelegate){
             $scope.openFilter = function(){
               $ionicSideMenuDelegate.toggleRight();
             };
@@ -91,13 +91,18 @@
               };
 
               $scope.isMoreData = function () {
-                  console.log($scope.page < ($scope.count / $scope.pageSize));
+                  //console.log($scope.page < ($scope.count / $scope.pageSize));
                   return $scope.page < ($scope.count / $scope.pageSize);
               };
 
               $scope.loadMoreData = function(){
                   $scope.page++;
-                  Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : $scope.page}).then(function(response){
+                  $scope.route =  'sap/po/purchase_orders/'+$stateParams.poNumber+'/items';
+                  $scope.path ='';
+                  $scope.params = {
+                    pageIndex : $scope.page
+                  };
+                restApi.getData($scope.route,$scope.path,$scope.params).then(function(response){
                       Array.prototype.push.apply($scope.results, response.results);
                       $scope.$broadcast('scroll.infiniteScrollComplete');
                       console.log($scope.results);
@@ -111,7 +116,12 @@
                   $ionicLoading.show({
                       template: 'Loading...'
                   });
-                  Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
+                  $scope.route =  'sap/po/purchase_orders/'+$stateParams.poNumber+'/items';
+                  $scope.path ='';
+                  $scope.params = {
+                    pageIndex : '1'
+                  };
+                  restApi.getData($scope.route,$scope.path,$scope.params).then(function(response){
                       $scope.results= response.results;
                       $scope.count = response.totalCount;
                       $scope.page = response.pageIndex;
