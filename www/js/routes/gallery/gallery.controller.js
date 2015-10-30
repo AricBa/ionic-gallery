@@ -14,7 +14,7 @@
               };
 
               $scope.isMoreData = function () {
-                  console.log($scope.page < ($scope.count / $scope.pageSize));
+                  //console.log($scope.page < ($scope.count / $scope.pageSize));
                   return $scope.page < ($scope.count / $scope.pageSize);
               };
 
