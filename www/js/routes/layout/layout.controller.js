@@ -19,11 +19,11 @@
      *
      * @ngInject
      */
-    function LayoutCtrl($state, Authentication,$scope,Restangular) {
+    function LayoutCtrl($state, Authentication,$scope) {
         var vm = this;
 
-        $scope.goDetail = function(){
-            Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET()
+        $scope.goDetail = function(status){
+            $state.go('app.gallery',{status: status});
         };
 
         vm.signOut = function() {

@@ -68,23 +68,40 @@
 
     <ion-side-menu side="right" expose-aside-when="large">
         <ion-content scroll="false" class="sidebar">
-            <ion-item> Filter </ion-item>
+            <div class="heading-item item ">
+                <p class="message">Filter</p>
+            </div>
             <ion-item>
-                <div class="item item-divider ">
+                <div class="item item-divider " >
                     Status
                 </div>
-                <a class="item  item-icon-right" ng-click="goDetail('0')" >
-                    unapproved
-                </a>
-                <a class="item  item-icon-right" ng-click="goDetail('1')" >
-                    locked
-                </a>
-                <a class="item  item-icon-right" ng-click="goDetail('3')" >
-                    approved
-                </a>
-                <a class="item  item-icon-right" ng-click="goDetail('6')" >
-                    cancelled
-                </a>
+                <ul class="nav sidebar-nav">
+                    <li class="divider"></li>
+                    <li md-ink-ripple="#333">
+                        <a ui-sref="app.gallery({status: '0' })" nav-clear menu-close>
+                            Unapproved
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li md-ink-ripple="#333">
+                        <a ui-sref="app.gallery({status: '1' })" nav-clear menu-close>
+                            Locked
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li md-ink-ripple="#333">
+                        <a ui-sref="app.gallery({status: '3' })" nav-clear menu-close>
+                            Approved
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li md-ink-ripple="#333">
+                        <a ui-sref="app.gallery({status: '6' })" nav-clear menu-close>
+                            Cancelled
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
             </ion-item>
         </ion-content>
     </ion-side-menu>
