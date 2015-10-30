@@ -37,14 +37,16 @@
                     }
                 },
                 resolve:{
-                    PO :function ($stateParams,Restangular,$q,$ionicLoading){
+                    PO :function ($stateParams,restApi,$q,$ionicLoading){
                         var d = $q.defer();
 
                         $ionicLoading.show({
                             template:'Loading...'
                         });
 
-                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber).customGET().then(function(response){
+                        var route = 'sap/po/purchase_orders/'+$stateParams.poNumber;
+
+                        restApi.getData(route).then(function(response){
                             if(response.results[0].DM_STATUS == 0 || response.results[0].DM_STATUS == 6) {
                                 d.resolve([response,'Approve']);
                             }else if (response.results[0].DM_STATUS == 1){
@@ -75,13 +77,18 @@
                     }
                 },
                 resolve:{
-                    items:function($stateParams,Restangular,$q,$ionicLoading){
+                    items:function($stateParams,restApi,$q,$ionicLoading){
                         var d = $q.defer();
                         $ionicLoading.show({
                             template:'Loading...'
                         });
 
-                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items').customGET('',{pageIndex : "1"}).then(function(response){
+                        var route =  'sap/po/purchase_orders/'+$stateParams.poNumber+'/items';
+                        var path ='';
+                        var params = {
+                            pageIndex : '1'
+                        };
+                        restApi.getData(route,path,params).then(function(response){
                             d.resolve(response);
                             $ionicLoading.hide();
                         });
@@ -102,13 +109,18 @@
                     }
                 },
                 resolve:{
-                    item:function($stateParams,Restangular,$q,$ionicLoading){
+                    item:function($stateParams,restApi,$q,$ionicLoading){
                         var d = $q.defer();
                         $ionicLoading.show({
                             template:'Loading...'
                         });
 
-                        Restangular.all('sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId).customGET().then(function(response){
+                        var route =  'sap/po/purchase_orders/'+$stateParams.poNumber+'/items/'+$stateParams.itemId;
+                        var path ='';
+                        var params = {
+                            pageIndex : '1'
+                        };
+                        return restApi.getData(route,path,params).then(function(response){
                             d.resolve(response);
                             $ionicLoading.hide();
                         });
