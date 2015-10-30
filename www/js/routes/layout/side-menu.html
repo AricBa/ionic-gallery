@@ -78,25 +78,31 @@
                 <ul class="nav sidebar-nav">
                     <li class="divider"></li>
                     <li md-ink-ripple="#333">
-                        <a ui-sref="app.gallery({status: '0' })" nav-clear menu-close>
+                        <a ng-click="goDetail()" nav-clear menu-close>
+                            All
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li md-ink-ripple="#333">
+                        <a ng-click="goDetail('0')" nav-clear menu-close>
                             Unapproved
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li md-ink-ripple="#333">
-                        <a ui-sref="app.gallery({status: '1' })" nav-clear menu-close>
+                        <a ng-click="goDetail('1')" nav-clear menu-close>
                             Locked
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li md-ink-ripple="#333">
-                        <a ui-sref="app.gallery({status: '3' })" nav-clear menu-close>
+                        <a ng-click="goDetail('3')" nav-clear menu-close>
                             Approved
                         </a>
                     </li>
                     <li class="divider"></li>
                     <li md-ink-ripple="#333">
-                        <a ui-sref="app.gallery({status: '6' })" nav-clear menu-close>
+                        <a ng-click="goDetail('6')" nav-clear menu-close>
                             Cancelled
                         </a>
                     </li>

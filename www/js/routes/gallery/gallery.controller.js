@@ -2,7 +2,7 @@
     'use strict';
         angular
         .module('app.gallery')
-        .controller('GalleryCtrl', function($state,$scope,headers,Restangular,$ionicLoading) {
+        .controller('GalleryCtrl', function($state,$scope,headers,restApi,$ionicLoading) {
               $scope.results = headers.results;
               $scope.count = headers.totalCount;
               $scope.page = headers.pageIndex;
@@ -20,7 +20,15 @@
 
               $scope.loadMoreData = function(){
                   $scope.page++;
-                  Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : $scope.page}).then(function(response){
+                  $scope.route =  'sap/po/purchase_orders';
+                  $scope.path ='';
+                  $scope.params = {
+                      pageIndex : $scope.page
+                    };
+                  $scope.headers ={
+
+                    };
+                  restApi.getData($scope.route,$scope.path,$scope.params,$scope.headers).then(function(response){
                       Array.prototype.push.apply($scope.results, response.results);
                       $scope.$broadcast('scroll.infiniteScrollComplete');
                       console.log($scope.results);
@@ -30,11 +38,24 @@
               //    $scope.loadMoreData();
               //});
 
-              $scope.refresh = function(){
+              $scope.refresh = function(status){
                   $ionicLoading.show({
                       template: 'Loading...'
                   });
-                  Restangular.all('sap/po/purchase_orders').customGET('',{pageIndex : "1"}).then(function(response){
+                  $scope.route =  'sap/po/purchase_orders';
+                  $scope.path ='';
+                  $scope.status = '';
+                  if(status !== '' && typeof status !== 'undefined'){
+                    $scope.status = status;
+                  }
+                  $scope.params = {
+                    pageIndex : '1',
+                    filter: $scope.status
+                  };
+                  $scope.headers ={
+
+                  };
+                  restApi.getData($scope.route,$scope.path,$scope.params,$scope.headers).then(function(response){
                       $scope.results= response.results;
                       $scope.count = response.totalCount;
                       $scope.page = response.pageIndex;
@@ -43,8 +64,13 @@
                       console.log('$scope.refresh');
                       $scope.$broadcast('scroll.refreshComplete');
                       $ionicLoading.hide();
+                    $scope.status = '';
                   });
               };
+
+            $scope.$on('refresh',function(){
+               $scope.refresh($scope.$parent.status);
+            })
           })
         .controller('headerCtrl',function(PO,$scope,$state) {
               $scope.po = PO[0].results[0];

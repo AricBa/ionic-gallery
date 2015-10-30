@@ -23,7 +23,9 @@
         var vm = this;
 
         $scope.goDetail = function(status){
-            $state.go('app.gallery',{status: status});
+            $scope.status = status;
+            console.log($scope.status);
+            $scope.$broadcast('refresh');
         };
 
         vm.signOut = function() {
