@@ -19,6 +19,9 @@
               getData: function(route,path,params,headers){
                  return Restangular.all(route).customGET(path,params,headers);
               },
+              refreshData: function(route,prams,headers){
+                return Restangular.all(route).get(prams,headers);
+              },
               post: function(route){
                   return Restangular.all(route).post();
               }

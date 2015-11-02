@@ -11,7 +11,8 @@
     /* @ngInject */
     function onConfig($urlRouterProvider, RestangularProvider, localStorageServiceProvider, SERVER_API_URL) {
         // use "ionic-photo-gallery" as a localStorage name prefix so app doesn’t accidently read data from another app using the same variable names
-        localStorageServiceProvider.setPrefix('ionic-photo-gallery');
+        localStorageServiceProvider.setPrefix('ionic-photo-gallery')
+          .setNotify(true, true);
 
         // set material design template
         //$mdThemingProvider.theme('default')
@@ -33,6 +34,20 @@
         $urlRouterProvider.otherwise('/signin');
 
         RestangularProvider.setDefaultHttpFields({cache: true});
+
+        //RestangularProvider.addRequestInterceptor(function(element, operation, route, url) {
+        //    if(operation == 'customGET'){
+        //        debugger;
+        //
+        //    }
+        //    return element;
+        //});
+
+        //RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred){
+        //    if( operation == 'customGET' || operation == 'get'){
+        //        //localStorageService.set(url,data);
+        //    }
+        //});
     }
 
     /* @ngInject */
